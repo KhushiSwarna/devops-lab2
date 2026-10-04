@@ -1,0 +1,51 @@
+LAB 2 - CONTAINERIZATION AND KUBERNETES ORCHESTRATION
+
+DOCKER:
+docker build -t devops-lab2:v1 .
+docker run -d --name lab2-app -p 5000:5000 devops-lab2:v1
+docker ps
+docker stop lab2-app
+docker start lab2-app
+docker images
+docker tag devops-lab2:v1 axdy02/devops-lab2:v1
+docker push axdy02/devops-lab2:v1
+docker history devops-lab2:v1
+
+DOCKER COMPOSE:
+docker compose up -d
+docker compose ps
+docker compose down
+
+STORAGE:
+docker volume create lab2-data
+docker volume ls
+-v lab2-data:/data
+-v ~/devops-lab2/bind-data:/data
+
+NETWORK:
+docker network create lab2-network
+docker network inspect lab2-network
+docker exec network-a ping network-b
+
+KUBERNETES:
+minikube start --driver=docker
+kubectl get nodes
+kubectl apply -f kubernetes/deployment.yaml
+kubectl apply -f kubernetes/service.yaml
+kubectl get deployments
+kubectl get pods
+kubectl get services
+
+SCALING:
+kubectl scale deployment devops-lab2 --replicas=4
+
+ROLLING UPDATE:
+kubectl set image deployment/devops-lab2 devops-lab2=axdy02/devops-lab2:v2
+kubectl rollout status deployment/devops-lab2
+
+ROLLBACK:
+kubectl rollout history deployment/devops-lab2
+kubectl rollout undo deployment/devops-lab2
+
+CONTINUOUS DEPLOYMENT:
+Jenkins -> kubectl apply -> Kubernetes Deployment
